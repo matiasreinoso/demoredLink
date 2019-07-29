@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -30,13 +32,14 @@ import mreinoso.demo_redlink.model.Album;
 import mreinoso.demo_redlink.model.Photo;
 import mreinoso.demo_redlink.utils.DemoDB;
 import mreinoso.demo_redlink.utils.HttpHandler;
+import mreinoso.demo_redlink.utils.ItemDecorator;
 
 public class MainActivity extends AppCompatActivity {
 
     private DemoDB demoDB;
     private RecyclerView rv_album;
     private SearchView searchView;
-    private Filterable mAdapter;
+    private AlbumAdapter mAdapter;
     private ProgressDialog mDialog;
 
     @Override
@@ -47,15 +50,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // toolbar fancy stuff
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(R.string.toolbar_title);
-
 
         rv_album = (RecyclerView) findViewById(R.id.rv_album);
 
-
-        // white background notification bar
         whiteNotificationBar(rv_album);
 
         demoDB = new DemoDB(getApplicationContext());
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         new GetData().execute();
 
-        loadRecyvcleView();
+        loadRecycleView();
     }
 
     @Override
@@ -82,14 +81,12 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // filter recycler view when query submitted
                 mAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-                // filter recycler view when text is changed
                 mAdapter.getFilter().filter(query);
                 return false;
             }
@@ -99,12 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
         }
@@ -161,11 +154,11 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            loadRecyvcleView();
+            loadRecycleView();
         }
     }
 
-    private void loadRecyvcleView() {
+    private void loadRecycleView() {
         ArrayList<Album> albums = demoDB.getAlbum();
 
         if (!albums.isEmpty()) {
@@ -174,19 +167,20 @@ public class MainActivity extends AppCompatActivity {
                 if (mDialog.isShowing()) mDialog.dismiss();
             }
 
-            rv_album.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
-            rv_album.setLayoutManager(llm);
 
-            AlbumAdapter albumAdapter = new AlbumAdapter(MainActivity.this, albums);
+            mAdapter = new AlbumAdapter(MainActivity.this, albums);
 
-            rv_album.setAdapter(albumAdapter);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            rv_album.setLayoutManager(mLayoutManager);
+            rv_album.setItemAnimator(new DefaultItemAnimator());
+            rv_album.addItemDecoration(new ItemDecorator(this, DividerItemDecoration.VERTICAL, 36));
+
+            rv_album.setAdapter(mAdapter);
+
 
         } else {
-
             mDialog = ProgressDialog.show(MainActivity.this, getResources().getString(R.string.loading_title),
                     getResources().getString(R.string.loading_msj), true);
-
         }
     }
 

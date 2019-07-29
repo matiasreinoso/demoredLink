@@ -23,9 +23,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.HomeViewHold
     public static Context mContext;
     private ArrayList<Album> albumListFiltered;
 
-    public AlbumAdapter(Context context, ArrayList<Album> contactModel) {
+    public AlbumAdapter(Context context, ArrayList<Album> contactList) {
         mContext = context;
-        albumList = contactModel;
+        albumList = contactList;
+        albumListFiltered = contactList;
     }
 
     @Override
@@ -85,12 +86,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.HomeViewHold
         };
     }
 
-
     public static class HomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final int REQUEST_CODE = 1;
-        //        @BindView(R.id.tv_name)
+
         public TextView tv_id;
-        //        @BindView(R.id.tv_address)
         public TextView tv_text;
         private int id;
 
@@ -105,6 +104,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.HomeViewHold
 
         HomeViewHolder(View itemView) {
             super(itemView);
+
+
             tv_id = (TextView) itemView.findViewById(R.id.tv_id);
             tv_text = (TextView) itemView.findViewById(R.id.tv_text);
 

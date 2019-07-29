@@ -20,9 +20,9 @@ public class PhotoListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_photo);
 
-        rv_photos = (RecyclerView) findViewById(R.id.rv_album);
+        rv_photos = (RecyclerView) findViewById(R.id.rv_photos);
 
         demoDB = new DemoDB(getApplicationContext());
         demoDB = DemoDB.getInstance(getApplicationContext());

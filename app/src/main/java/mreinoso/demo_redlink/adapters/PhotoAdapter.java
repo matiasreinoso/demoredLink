@@ -15,10 +15,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import mreinoso.demo_redlink.R;
-import mreinoso.demo_redlink.activities.PhotoListActivity;
 import mreinoso.demo_redlink.model.Photo;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.HomeViewHolder> {
@@ -60,13 +57,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.HomeViewHold
     public static class HomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final int REQUEST_CODE = 1;
 
-//        @BindView(R.id.tv_id)
         public TextView tv_id;
 
-//        @BindView(R.id.tv_title)
         public TextView tv_text;
 
-//        @BindView(R.id.iv_photo)
         public ImageView iv_photo;
 
         private int id;
@@ -79,12 +73,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.HomeViewHold
         HomeViewHolder(View itemView) {
             super(itemView);
 
-//            ButterKnife.bind(PhotoListActivity.this);
-
             tv_id = (TextView) itemView.findViewById(R.id.tv_id);
-            tv_text = (TextView) itemView.findViewById(R.id.tv_text);
+            tv_text = (TextView) itemView.findViewById(R.id.tv_title);
             iv_photo = (ImageView) itemView.findViewById(R.id.iv_photo);
-//            itemView.setOnClickListener(this);
         }
 
 
@@ -93,7 +84,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.HomeViewHold
             id = photo.getId();
 
             tv_text.setText(photo.getTitle());
-            tv_id.setText(photo.getId());
+            tv_id.setText(String.valueOf(id));
 
             new DownLoadImageTask(iv_photo).execute(photo.getUrl());
         }
@@ -112,7 +103,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.HomeViewHold
                 try {
                     InputStream is = new URL(urlOfImage).openStream();
                     logo = BitmapFactory.decodeStream(is);
-                } catch (Exception e) { // Catch the download exception
+                } catch (Exception e) {
                 }
                 return logo;
             }
