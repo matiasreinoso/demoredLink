@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">demo-redLink</string>
+    <string name="album_access">albums</string>
+    <string name="photos_access">photos</string>
+    <string name="url_main">https://jsonplaceholder.typicode.com/</string>
+    <string name="tag_albumID">albumId</string>
+    <string name="tag_id">id</string>
+    <string name="tag_title">title</string>
+    <string name="tag_url">url</string>
+    <string name="tag_Turl">thumbnailUrl</string>
+    <string name="tag_userID">userId</string>
+    <string name="filtro_alb">Filtro de Albúm</string>
+    <string name="idAlbum">idAlbum</string>
+    <string name="toolbar_title">Albums</string>
+    <string name="settings">Settings</string>
+    <string name="loading_msj">Cargando, espere por favor...</string>
+    <string name="loading_title">Obteniendo datos</string>
 </resources>
