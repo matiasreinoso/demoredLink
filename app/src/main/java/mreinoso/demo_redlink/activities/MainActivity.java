@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.toolbar_title);
 
         rv_album = (RecyclerView) findViewById(R.id.rv_album);
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 .getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
-        // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -102,14 +100,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        loadRecycleView();
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        // close search view on back button pressed
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
+            loadRecycleView();
             return;
         }
         super.onBackPressed();
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            Toast.makeText(MainActivity.this, "Json Data is downloading", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -140,12 +138,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (albums.isEmpty()) {
                 HttpHandler sh = new HttpHandler();
-                // Making a request to url and getting response
-
                 parseData(sh, getResources().getString(R.string.album_access));
                 parseData(sh, getResources().getString(R.string.photos_access));
             }
 
+            if (mDialog != null) {
+                if (mDialog.isShowing()) mDialog.dismiss();
+            }
             return null;
         }
 
@@ -154,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
+            if (mDialog != null) {
+                if (mDialog.isShowing()) mDialog.dismiss();
+            }
             loadRecycleView();
         }
     }
@@ -166,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
             if (mDialog != null) {
                 if (mDialog.isShowing()) mDialog.dismiss();
             }
-
 
             mAdapter = new AlbumAdapter(MainActivity.this, albums);
 
@@ -227,5 +228,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
+
     }
 }

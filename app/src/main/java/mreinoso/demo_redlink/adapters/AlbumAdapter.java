@@ -23,10 +23,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.HomeViewHold
     public static Context mContext;
     private ArrayList<Album> albumListFiltered;
 
-    public AlbumAdapter(Context context, ArrayList<Album> contactList) {
+    public AlbumAdapter(Context context, ArrayList<Album> list) {
         mContext = context;
-        albumList = contactList;
-        albumListFiltered = contactList;
+        albumList = list;
+        albumListFiltered = list;
     }
 
     @Override
@@ -81,6 +81,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.HomeViewHold
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 albumListFiltered = (ArrayList<Album>) filterResults.values;
+                albumList = albumListFiltered;
                 notifyDataSetChanged();
             }
         };

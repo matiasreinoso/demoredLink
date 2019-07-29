@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Álbumnes</string>
+    <string name="app_name">Álbumnes Test</string>
     <string name="album_access">albums</string>
     <string name="photos_access">photos</string>
     <string name="url_main">https://jsonplaceholder.typicode.com/</string>
